@@ -1,3 +1,10 @@
+<?php
+session_start();
+if(!isset($_SESSION['username'])){
+	header('Location: pages/login.php');
+	exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +15,8 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-	<div class="d-flex justify-content-center align-items-center vh-100"  >
-
-		<form class="shadow w-450 p-3" action="php/signup.php" method="post">
-			<h4 class="display-4 fs-1" >Create Account</h4>
-			<?php if(isset($_GET['error'])){ ?>
+	<div class="d-flex flex-column justify-content-center align-items-center vh-100"  >
+		<?php if(isset($_GET['error'])){ ?>
 			<div class="alert alert-danger" role="alert">
 			<?php echo $_GET['error']; ?>
 			</div>
@@ -23,34 +27,13 @@
 			<?php echo $_GET['success']; ?>
 			</div>
 			<?php } ?>
+			<h4 class="display-1 fs-1" >Welcome <?php echo $_SESSION['username']?></h4>
+			
 
-			<div class="mb-3">
-			    <label class="form-label">Full Name</label>
-			    <input type="text"
-			    		class="form-control"
-			    		name="fname" 
-			    		value="<?php echo(isset($_GET['fname']))? $_GET['fname']:"" ?>">
-			</div>
-
-			<div class="mb-3">
-			    <label class="form-label">User Name</label>
-			    <input type="text"
-			    		class="form-control"
-			    		name="uname" 
-			    		value="<?php echo(isset($_GET['uname']))? $_GET['uname']:"" ?>">
-			</div>
-
-			<div class="mb-3">
-			    <label class="form-label">Passward</label>
-			    <input type="Passward" 
-			    		class="form-control"
-			    		name="pass" 
-			    		value="<?php echo(isset($_GET['pass']))? $_GET['pass']:"" ?>">
-			</div>
-
-			<button type="submit" class="btn btn-primary">Sign Up</button>
-			<a href="login.php" class="link-secondary">Login</a>
-		</form>
+			<p>Nom : <?php echo $_SESSION['fname']?></p>
+			<p>ID : <?php echo $_SESSION['id']?></p>
+			<p>Nom utilisateur : <?php echo $_SESSION['username']?></p>
+			<a href="php/logout.php" class="btn btn-dark">logout</a>
 	</div>
 </body>
 </html>

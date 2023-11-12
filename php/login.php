@@ -1,4 +1,6 @@
+
 <?php
+session_start();
 	if( isset($_POST['uname']) && 
 		isset($_POST['pass'])){
 		include '../db_conn.php';
@@ -10,16 +12,16 @@
 
 		if (empty($uname)) {
 			$em = "User name is required";
-			header("Location: ../login.php?error=$em&$data");
+			header("Location: ../pages/login.php?error=$em&$data");
 			exit;
 		}elseif (empty($pass)) {
 			$em = "Passward is required";
-			header("Location: ../login.php?error=$em&$data");
+			header("Location: ../pages/login.php?error=$em&$data");
 			exit;
 		}else {
 
 
-			$sql = "SELECT * FROM users WHERE username =";
+			$sql = "SELECT * FROM users WHERE username = ?";
 			$stmt = $conn->prepare($sql);
 			$stmt->execute([$uname]);
 
@@ -29,33 +31,39 @@
 				$username = $user['username'];
 				$password = $user['passward'];
 				$fname = $user['fname'];
-				$id = $user['id'];
-				if($username === $uname){
+				$id = $user['id_user'];
+				if($username == $uname){
 					if(password_verify($pass, $password)){
+						$_SESSION['username'] = $username;
+						$_SESSION['password'] = $password;
+						$_SESSION['fname'] = $fname;
+						$_SESSION['id'] = $id;
+						header("Location: ../index.php?success=Success");
+			exit;
 						echo "Logged in";
 					}else {
-						em = "Incorect User name or password";
-						header("Location: ../login.php?error=$em&$data");
+						$em = "Incorect User name or password";
+						header("Location: ../pages/login.php?error=$em&$data");
 						exit;
 					}
 				}else {
-					em = "Incorect User name or password";
-					header("Location: ../login.php?error=$em&$data");
+					$em = "Incorect User name or password";
+					header("Location: ../pages/login.php?error=$em&$data");
 					exit;
 				}
 
 			}else {
-				em = "Incorect User name or password";
-				header("Location: ../login.php?error=$em&$data");
+				$em = "Incorect User name or password";
+				header("Location: ../pages/login.php?error=$em&$data");
 				exit;
 			}
 
-			header("Location: ../login.php?success=Your account has been created successfully");
+			header("Location: ../pages/login.php?success=Your account has been created successfully");
 			exit;
 		}
 	}
 	else {
-		header("Location: ../login.php?error=error");
+		header("Location: ../pages/login.php?error=error");
 		exit;
 	}
 ?>

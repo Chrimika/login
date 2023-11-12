@@ -1,4 +1,5 @@
 <?php
+session_start();
 	if(isset($_POST['fname']) && 
 		isset($_POST['uname']) && 
 		isset($_POST['pass'])){
@@ -32,7 +33,7 @@
 			$stmt = $conn->prepare($sql);
 			$stmt->execute([$fname, $uname, $pass]);
 
-			header("Location: ../index.php?success=Your account has been created successfully");
+			header("Location: ../pages/login.php?success=You are registered successfuly. login");
 			exit;
 		}
 	}
